@@ -1,0 +1,102 @@
+service: client-service
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    RDS_HOST: ${file(./env.json):RDS_HOST}
+    RDS_USER: ${file(./env.json):RDS_USER}
+    RDS_PASSWORD: ${file(./env.json):RDS_PASSWORD}
+    RDS_DATABASE_NAME: ${file(./env.json):RDS_DATABASE_NAME}
+    bucketName: ${file(./env.json):S3_BUCKET_NAME}
+
+functions:
+  app:
+    handler: endpoints/main.handler
+    role: arn:aws:iam::819250165252:role/lambda-vpc-role
+    vpc:
+      securityGroupIds:
+        - sg-048466d4c2e612633
+      subnetIds:
+        - subnet-088d8b37b47689b8b
+        - subnet-02795bfb528be4b3a
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+  submitClient:
+    handler: endpoints/submitClient.handler
+    role: sesLambdaRole
+    events:
+      - http: 
+          path: submit-client
+          method: post
+  sendEmail:
+    handler: endpoints/sendEmail.handler
+    role: sesLambdaRole
+    events:
+      - http: 
+          path: send-email
+          method: post
+  createFile:
+    handler: endpoints/createFile.handler
+    role: s3LambdaRole
+    events:
+      - http:
+          path: create-file/{fileName}
+          method: post
+  getFile:
+    handler: endpoints/listFiles.handler
+    role: s3LambdaRole
+    events:
+      - http:
+          path: list-files/{fileName}
+          method: get
+
+
+resources:
+  Resources:
+    sesLambdaRole: 
+      Type: AWS::IAM::Role 
+      Properties:
+        RoleName: sesLambdaRole
+        AssumeRolePolicyDocument: 
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow 
+              Principal: 
+                Service: 
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole 
+        Policies: 
+          - PolicyName: sesLambdaPolicy
+            PolicyDocument: 
+              Version: '2012-10-17'
+              Statement: 
+                - Effect: Allow
+                  Action:
+                    - ses:* 
+                    - logs:*
+                  Resource: '*'
+
+    s3LambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        RoleName: s3LambdaRole 
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+              Action: sts:AssumeRole 
+        Policies:
+          - PolicyName: s3LambdaPolicy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow 
+                  Action:
+                    - s3:* 
+                    - logs:*
+                  Resource: '*'
