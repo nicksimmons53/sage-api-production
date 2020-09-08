@@ -30,7 +30,7 @@ router.get('/:clientId', async(request, response) => {
 });
 
 // Create client
-router.post('/clients', async(request, response) => {
+router.post('/', async(request, response) => {
   let sql = "INSERT INTO client SET ?;";
 
   await connection.query(sql, request.body, (err, res) => {
@@ -56,7 +56,7 @@ router.get('/:clientId/address', async(request, response) => {
   });
 });
 
-router.get('/advanced-info', async(request, response) => {
+router.get('/:clientId/advanced-info', async(request, response) => {
   let sql = "SELECT * FROM client_info where client_id=?";
 
   await connection.query(sql, request.params.clientId, (err, res) => {
