@@ -26,8 +26,12 @@ app.use(bodyParser.json({ strict: false }));
 //
 //
 // Default Response
+// app.get('/', (req, res) => {
+//   res.send("Welcome to MC Surfaces - Sage API.");
+// });
+
 app.get('/', (req, res) => {
-  res.send("Welcome to MC Surfaces - Sage API.");
+  res.send("This is MC Surfaces - Sage API.");
 });
 
 // Retrieve all employees
@@ -54,7 +58,7 @@ app.get('/employee/:empId', async(request, response) => {
 
 // Retrieve employee clients
 app.get('/employee/:empId/clients', async(request, response) => {
-  let sql = "SELECT * FROM client WHERE empnum = ?;";
+  let sql = "SELECT * FROM client WHERE empnum = ? ORDER BY clnnme;";
 
   await connection.query(sql, [ request.params.empId ], (err, res) => {
     if (err) throw err;
@@ -169,6 +173,50 @@ app.get('/employee/:empId/clients/:clientId/tileProgram', async(request, respons
   });
 });
 
+// Retrieve client wood program
+app.get('/employee/:empId/clients/:clientId/woodProgram', async(request, response) => {
+  let sql = "SELECT * FROM wood_program where client_id=?";
+
+  await connection.query(sql, request.params.clientId, (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+// Retrieve client carpet program
+app.get('/employee/:empId/clients/:clientId/carpetProgram', async(request, response) => {
+  let sql = "SELECT * FROM carpet_program where client_id=?";
+
+  await connection.query(sql, request.params.clientId, (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+// Retrieve client countertop program
+app.get('/employee/:empId/clients/:clientId/countertopProgram', async(request, response) => {
+  let sql = "SELECT * FROM countertop_program WHERE client_id=?;";
+
+  await connection.query(sql, request.params.clientId, (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+// Retrieve client countertop program
+app.get('/employee/:empId/clients/:clientId/cabinetProgram', async(request, response) => {
+  let sql = "SELECT * FROM cabinet_program WHERE client_id=?;";
+
+  await connection.query(sql, request.params.clientId, (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
 // Retrieve client parts
 app.get('/employee/:empId/clients/:clientId/parts/:programId', async(request, response) => {
   let sql = "SELECT * FROM part WHERE clntid = ? and prgrm_ = ?;";
@@ -274,25 +322,67 @@ app.post('/employee/:empId/clients/:clientId/advanced-info', async(request, resp
 });
 
 app.post('/employee/:empId/clients/:clientId/client-contacts', async(request, response) => {
-    let sql = "INSERT INTO contact SET ?;";
+  let sql = "INSERT INTO contact SET ?;";
 
-    connection.query(sql, request.body, (err, res) => {
-        if (err) throw err;
+  connection.query(sql, request.body, (err, res) => {
+      if (err) throw err;
 
-        response.send(res);
-    });
+      response.send(res);
+  });
 });
 
 // Retrieve client tile program
 app.post('/employee/:empId/clients/:clientId/tileProgram', async(request, response) => {
-    let sql = "INSERT INTO tile_program SET ? ON DUPLICATE KEY UPDATE ?;";
-  
-    await connection.query(sql, [ request.body, request.body ], (err, res) => {
-      if (err) throw err;
-  
-      response.send(res);
-    });
+  let sql = "INSERT INTO tile_program SET ? ON DUPLICATE KEY UPDATE ?;";
+
+  await connection.query(sql, [ request.body, request.body ], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
   });
+});
+
+app.post('/employee/:empId/clients/:clientId/woodProgram', async(request, response) => {
+  let sql = "INSERT INTO wood_program SET ? ON DUPLICATE KEY UPDATE ?;";
+
+  await connection.query(sql, [request.body, request.body], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+app.post('/employee/:empId/clients/:clientId/carpetProgram', async(request, response) => {
+  let sql = "INSERT INTO carpet_program SET ? ON DUPLICATE KEY UPDATE ?;";
+
+  await connection.query(sql, [request.body, request.body], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+// Retrieve client tile program
+app.post('/employee/:empId/clients/:clientId/countertopProgram', async(request, response) => {
+  let sql = "INSERT INTO countertop_program SET ? ON DUPLICATE KEY UPDATE ?;";
+
+  await connection.query(sql, [ request.body, request.body ], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+app.post('/employee/:empId/clients/:clientId/cabinetProgram', async(request, response) => {
+  let sql = "INSERT INTO cabinet_program SET ? ON DUPLICATE KEY UPDATE ?;";
+
+  await connection.query(sql, [request.body, request.body], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
 
 //
 //

@@ -23,5 +23,9 @@
     "serverless-http": "^2.5.0",
     "superagent": "^6.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "serverless": "^1.61.2",
+    "serverless-aws-alias": "^1.8.0",
+    "serverless-offline": "^6.7.0"
+  }
 }
