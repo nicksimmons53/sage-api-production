@@ -13,9 +13,23 @@ exports.handler = async event => {
     let email_from = 'donotreply@mcsurfacesinc.com';
 
     // Data Representation Variables
-    let emailTemplate = path.join(__dirname, '../common/Client.ejs');
-    let emailTileTemplate = path.join(__dirname, '../common/TileProgram.ejs');
-    let { client, parts, tileProgramInfo, advancedInfo, contacts } = JSON.parse(event.body);
+    let emailTemplate = path.join(__dirname, '../common/Templates/Client.ejs');
+    let tileEmailTemp = path.join(__dirname, '../common/Templates/TileProgram.ejs');
+    let countertopEmailTemp = path.join(__dirname, '../common/Templates/CountertopProgram.ejs');
+    let woodEmailTemp = path.join(__dirname, '../common/Templates/WoodProgram.ejs');
+    let carpetEmailTemp = path.join(__dirname, '../common/Templates/CarpetProgram.ejs');
+    let cabinetEmailTemp = path.join(__dirname, '../common/Templates/CabinetProgram.ejs');
+    let { 
+        client, 
+        parts, 
+        tileProgramInfo,
+        woodProgramInfo,
+        carpetProgramInfo,
+        countertopProgramInfo,
+        cabinetProgramInfo, 
+        advancedInfo, 
+        contacts 
+    } = JSON.parse(event.body);
 
     // Clean up boolean values in advanced info 
     if (advancedInfo !== undefined) {
@@ -25,17 +39,26 @@ exports.handler = async event => {
     }
 
     // Clean up boolean values in tile program
-    let tileProgramHTML = null;
-    if (tileProgramInfo !== undefined) {
-        Object.keys(tileProgramInfo).forEach((key) => {
-            tileProgramInfo[key] = boolSwitch(tileProgramInfo[key]);
-        });
+    let programs = [
+        { info: tileProgramInfo, html: null, template: tileEmailTemp },
+        { info: countertopProgramInfo, html: null, template: countertopEmailTemp },
+        { info: cabinetProgramInfo, html: null, template: woodEmailTemp },
+        { info: carpetProgramInfo, html: null, template: carpetEmailTemp },
+        { info: woodProgramInfo, html: null, template: cabinetEmailTemp }
+    ];
 
-        tileProgramHTML = await ejs.renderFile(emailTileTemplate, {
-            client: client,
-            tileProgram: tileProgramInfo
-        });
-    }
+    programs.map(async (program, index) => {
+        if (program.info !== undefined) {
+            Object.keys(program.info).forEach((key) => {
+                program.info[key] = boolSwitch(program.info[key]);
+            });
+            
+            program.html = await ejs.renderFile(program.template, {
+                client: client,
+                program: program.info
+            });
+        }
+    });
 
     // Render data into HTML file
     let generalInfoHTML = await ejs.renderFile(emailTemplate, { 
@@ -47,8 +70,9 @@ exports.handler = async event => {
 
     // Raw Email Content
     var ses_mail = "From: 'MC Surfaces' <" + email_from + ">\n";
-    ses_mail = ses_mail + "To: " + email_to + "\n";
-    ses_mail = ses_mail + "Cc: " + email_cc + "\n";
+    // ses_mail = ses_mail + "To: nicks@mcsurfacesinc.com" + "\n";
+    ses_mail = ses_mail + "To: lisak@mcsurfacesinc.com, heathera@mcsurfacesinc.com, kimn@mcsurfacesinc.com" + "\n";
+    ses_mail = ses_mail + "Cc: nicks@mcsurfacesinc.com, menec@mcsurfacesinc.com" + "\n";
     ses_mail = ses_mail + "Subject: New Client Information Review\n";
     ses_mail = ses_mail + "MIME-Version: 1.0\n";
     ses_mail = ses_mail + "Content-Type: multipart/mixed; boundary=\"NextPart\"\n\n";
@@ -59,16 +83,43 @@ exports.handler = async event => {
     ses_mail = ses_mail + "Content-Type: text/html;\n";
     ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}.html\"\n\n`;
     ses_mail = ses_mail + generalInfoHTML.toString('base64') + "\n\n";
-    ses_mail = ses_mail + "--NextPart\n";
-    ses_mail = ses_mail + "Content-Type: text/html;\n";
-    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-TileProgram.html\"\n\n`;
-    ses_mail = ses_mail + tileProgramHTML.toString('base64') + "\n"
+    if (programs[0].html !== null) {
+        ses_mail = ses_mail + "--NextPart\n";
+        ses_mail = ses_mail + "Content-Type: text/html;\n";
+        ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-TileProgram.html\"\n\n`;
+        ses_mail = ses_mail + programs[0].html.toString('base64') + "\n"
+    }
+    if (programs[1].html !== null) {
+        ses_mail = ses_mail + "--NextPart\n";
+        ses_mail = ses_mail + "Content-Type: text/html;\n";
+        ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-CountertopProgram.html\"\n\n`;
+        ses_mail = ses_mail + programs[1].html.toString('base64') + "\n"
+    }
+    if (programs[2].html !== null) {
+        ses_mail = ses_mail + "--NextPart\n";
+        ses_mail = ses_mail + "Content-Type: text/html;\n";
+        ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-CabinetProgram.html\"\n\n`;
+        ses_mail = ses_mail + programs[2].html.toString('base64') + "\n"
+    }
+    if (programs[3].html !== null) {
+        ses_mail = ses_mail + "--NextPart\n";
+        ses_mail = ses_mail + "Content-Type: text/html;\n";
+        ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-CarpetProgram.html\"\n\n`;
+        ses_mail = ses_mail + programs[3].html.toString('base64') + "\n"
+    }
+    if (programs[4].html !== null) {
+        ses_mail = ses_mail + "--NextPart\n";
+        ses_mail = ses_mail + "Content-Type: text/html;\n";
+        ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${client.clnnme}-WoodProgram.html\"\n\n`;
+        ses_mail = ses_mail + programs[4].html.toString('base64') + "\n"
+    }
     ses_mail = ses_mail + "--NextPart--";
 
     // Params for SES raw email
     var params = {
         RawMessage: { Data: Buffer.from(ses_mail) },
-        Destinations: [ email_to, email_cc ],
+        // Destinations: ["nicks@mcsurfacesinc.com"],
+        Destinations: ["nicks@mcsurfacesinc.com", "menec@mcsurfacesinc.com", "lisak@mcsurfacesinc.com", "heathera@mcsurfacesinc.com", "kimn@mcsurfacesinc.com"],
         Source: "'AWS Tutorial Series' <" + email_from + ">'"
     };
 
@@ -99,12 +150,12 @@ exports.handler = async event => {
 const boolSwitch = (value) => {
     switch(value) {
         case null:
-            return;
+            return '';
         case 0:
             return "No";
         case 1:
             return "Yes";
         default: 
-            return;
+            return value;
     }
 }

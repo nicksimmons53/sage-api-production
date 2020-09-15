@@ -90,124 +90,16 @@ ${client.shpste}
 <!--Zip-->
 ${client.shpzip}
 </ShippingPostalCode>
-<UserDefined1>
-<!--Character [30]-->
-${client.usrdf1}
-</UserDefined1>
-<UserDefined2>
-<!--Character [30]-->
-${client.usrdf2}
-</UserDefined2>
-<UserDefined3>
-<!--Character [30]-->
-${client.usrdf3}
-</UserDefined3>
-<UserDefined4>
-<!--Character [30]-->
-${client.usrdf4}
-</UserDefined4>
-<UserDefined5>
-<!--Character [30]-->
-${client.usrdf5}
-</UserDefined5>
-<UserDefined6Logical>
-<!--Numeric [0 - 1]-->
-${client.usrdf6}
-</UserDefined6Logical>
-<UserDefined7Logical>
-<!--Numeric [0 - 1]-->
-${client.usrdf7}
-</UserDefined7Logical>
-<UserDefined8Logical>
-<!--Numeric [0 - 1]-->
-${client.usrdf8}
-</UserDefined8Logical>
-<UserDefined9Logical>
-<!--Numeric [0 - 1]-->
-${client.usrdf9}
-</UserDefined9Logical>
 <ContactedDate>
 <!--Date-->
 ${client.lstctc}
 </ContactedDate>
-<CallbackDate>
-<!--Date-->
-${client.cllbck}
-</CallbackDate>
-<MailPiece>
-<!--Character [12]-->
-${client.lstmal}
-</MailPiece>
-<MailedDate>
-<!--Date-->
-${client.lstdte}
-</MailedDate>
-<PurchasedDate>
-<!--Date-->
-${client.pchdte}
-</PurchasedDate>
-<ReferenceDate>
-<!--Date-->
-${client.refdte}
-</ReferenceDate>
-<DueTerm>
-<!--Character-->
-${client.duetrm}
-</DueTerm>
-<FinanceRate>
-<!--Numeric [0 - 99]-->
-${client.finrte}
-</FinanceRate>
 <ClientStatusRef>
 <ObjectID>
 <!--Numeric [0 - 9999999999] :: required field-->
 1
 </ObjectID>
 </ClientStatusRef>
-<ExpirationDate>
-<!--Date-->
-${client.srvexp}
-</ExpirationDate>
-<DiscountRate>
-<!--Numeric [-99 - 999]-->
-${client.clndsc}
-</DiscountRate>
-<MapLocation>
-<!--Character [10]-->
-${client.maploc}
-</MapLocation>
-<CrossStreet>
-<!--Character [30]-->
-${client.crsstr}
-</CrossStreet>
-<PartBillingBasis>
-<!--Numeric [1 - 3]-->
-${client.bilbas}
-</PartBillingBasis>
-<PurchaseOrderNumber>
-<!--Character [15]-->
-${client.pchnum}
-</PurchaseOrderNumber>
-<TaxExemptionNumber>
-<!--Character [15]-->
-${client.exmnum}
-</TaxExemptionNumber>
-<CreditCardNumber>
-<!--Character [20]-->
-${client.crdnum}
-</CreditCardNumber>
-<CreditCardExpirationDate>
-<!--Date-->
-${client.expdte}
-</CreditCardExpirationDate>
-<CreditCardCarhdholder>
-<!--Character [30]-->
-${client.crdnme}
-</CreditCardCarhdholder>
-<CreditCardType>
-<!--Character [30]-->
-${client.crdtyp}
-</CreditCardType>
 <Memo>
 <!--Memo-->
 ${client.ntetxt}
@@ -237,10 +129,6 @@ ${client.e_mail}
 <!--Phone Number-->
 ${client.cllphn}
 </Mobile>
-<Fax>
-<!--Phone Number-->
-${client.faxnum}
-</Fax>
 <OtherPhone>
 <!--Phone Number-->
 </OtherPhone>
@@ -276,10 +164,6 @@ ${client.email2}
 <!--Phone Number-->
 ${client.cell02}
 </Mobile>
-<Fax>
-<!--Phone Number-->
-${client.fax002}
-</Fax>
 <OtherPhone>
 <!--Phone Number-->
 </OtherPhone>
@@ -315,10 +199,6 @@ ${client.email3}
 <!--Phone Number-->
 ${client.cell03}
 </Mobile>
-<Fax>
-<!--Phone Number-->
-${client.fax003}
-</Fax>
 <OtherPhone>
 <!--Phone Number-->
 </OtherPhone>
