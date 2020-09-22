@@ -73,7 +73,7 @@ exports.handler = async event => {
     // ses_mail = ses_mail + "To: nicks@mcsurfacesinc.com" + "\n";
     ses_mail = ses_mail + "To: lisak@mcsurfacesinc.com, heathera@mcsurfacesinc.com, kimn@mcsurfacesinc.com" + "\n";
     ses_mail = ses_mail + "Cc: nicks@mcsurfacesinc.com, menec@mcsurfacesinc.com" + "\n";
-    ses_mail = ses_mail + "Subject: New Client Information Review\n";
+    ses_mail = ses_mail + "Subject: " + client.clnnme + " - New Client Information Review\n";
     ses_mail = ses_mail + "MIME-Version: 1.0\n";
     ses_mail = ses_mail + "Content-Type: multipart/mixed; boundary=\"NextPart\"\n\n";
     ses_mail = ses_mail + "--NextPart\n";
