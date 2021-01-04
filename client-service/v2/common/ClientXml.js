@@ -126,6 +126,18 @@ ${client.usrdf8}
 <!--Numeric [0 - 1]-->
 ${client.usrdf9}
 </UserDefined9Logical>
+<SalespersonRef>
+<ObjectID>
+<!--Numeric [0 - 9999999999] :: required field-->
+${client.empnum}
+</ObjectID>
+</SalespersonRef>
+<ManagerRef>
+<ObjectID>
+<!--Numeric [0 - 9999999999] :: required field-->
+${client.mannum}
+</ObjectID>
+</ManagerRef>
 <ContactedDate>
 <!--Date-->
 ${client.lstctc}
