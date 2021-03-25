@@ -1,6 +1,9 @@
+require('dotenv').config( );
+
 const express = require('express');
 const router = express.Router({ mergeParams: true });
 const connection = require('../common/dbconfig');
+const axios = require('axios');
 
 // Import Other Route Files
 router.use('/:clientId/contacts', require('./contactRouter'));
@@ -32,11 +35,21 @@ router.get('/:clientId', async(request, response) => {
 // Create client
 router.post('/', async(request, response) => {
   let sql = "INSERT INTO client SET ?;";
+  let sql2 = "INSERT INTO manager_approvals SET ?;";
 
   await connection.query(sql, request.body, (err, res) => {
     if (err) throw err;
 
-    response.status(201).send(res);
+    let values = {
+      heathera: 0,
+      lisak: 0,
+      kimn: 0,
+      client_id: res.insertId
+    };
+  
+    connection.query(sql2, values, (err2, res2) => {
+      response.status(201).send(res);
+    });
   });
 });
 
@@ -93,6 +106,47 @@ router.get('/:clientId/client-data', async(request, response) => {
     response.send(result);
   });
 });
+
+router.get('/:clientId/approved', async(request, response) => {
+  let sql = "SELECT * FROM manager_approvals WHERE client_id=?;";
+
+  await connection.query(sql, request.params.clientId, (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+});
+
+router.put('/:clientId/approve-client', async(request, response) => {
+  let sql = "UPDATE manager_approvals SET ? WHERE client_id=?;";
+});
+
+router.put('/:clientId/deny-client', async(request, response) => {
+  let sql = "UPDATE manager_approvals SET ? WHERE client_id=?;";
+});
+
+router.get('/:clientId/push-to-sage', async(request, response) => {
+  // Make call to create client & contacts
+
+  // Make calls to create part classes
+
+  // Clean up parts
+
+  // Send response
+  await axios.get('https://172.16.15.2:1234/clients/137')
+    .then((res) => response.send(res))
+    .catch((error) => console.error(error));
+});
+
+router.put('/:clientId/manager-approvals', async(request, response) => {
+  let sql = "UPDATE manager_approvals SET ? WHERE client_id=?;";
+
+  connection.query(sql, [ request.body, request.params.clientId ], (err, res) => {
+    if (err) throw err;
+
+    response.send(res);
+  });
+})
 
 // Update Client Info
 router.put('/:clientId', async(request, response) => {

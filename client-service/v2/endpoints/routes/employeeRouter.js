@@ -1,3 +1,5 @@
+require('dotenv').config( );
+
 // Database Import
 const connection = require('../common/dbconfig');
 const router = require('express').Router( );

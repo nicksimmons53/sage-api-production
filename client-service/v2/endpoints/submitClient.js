@@ -6,10 +6,10 @@ const path = require('path');
 const SES = new AWS.SES( );
 
 exports.handler = async event => {
-    let email_to = ['nicks@mcsurfacesinc.com'];
-    let email_cc = ['nicks@mcsurfacesinc.com'];
-    // let email_to = ['lisak@mcsurfacesinc.com', 'heathera@mcsurfacesinc.com', 'kimn@mcsurfacesinc.com'];    
-    // let email_cc = ['menec@mcsurfacesinc.com', 'nicks@mcsurfacesinc.com'];
+    // let email_to = ['nicks@mcsurfacesinc.com'];
+    // let email_cc = ['nicks@mcsurfacesinc.com'];
+    let email_to = ['lisak@mcsurfacesinc.com', 'heathera@mcsurfacesinc.com', 'kimn@mcsurfacesinc.com'];    
+    let email_cc = ['menec@mcsurfacesinc.com', 'nicks@mcsurfacesinc.com'];
     let email_from = 'donotreply@mcsurfacesinc.com';
 
     // Data Representation Variables
@@ -21,7 +21,7 @@ exports.handler = async event => {
     let cabinetEmailTemp = path.join(__dirname, '../common/Templates/CabinetProgram.ejs');
     let requestData = JSON.parse(event.body);
 
-    console.log(requestData)
+    console.log(requestData);
 
     // Clean up boolean values in advanced info 
     if (requestData.advancedInfo !== undefined) {
@@ -34,9 +34,9 @@ exports.handler = async event => {
     let programs = [
         { info: requestData.tileProgramInfo, html: null, template: tileEmailTemp },
         { info: requestData.countertopProgramInfo, html: null, template: countertopEmailTemp },
-        { info: requestData.cabinetProgramInfo, html: null, template: woodEmailTemp },
+        { info: requestData.woodProgramInfo, html: null, template: woodEmailTemp },
         { info: requestData.carpetProgramInfo, html: null, template: carpetEmailTemp },
-        { info: requestData.woodProgramInfo, html: null, template: cabinetEmailTemp }
+        { info: requestData.cabinetProgramInfo, html: null, template: cabinetEmailTemp }
     ];
 
     programs.map(async (program, index) => {
@@ -110,8 +110,7 @@ exports.handler = async event => {
     // Params for SES raw email
     var params = {
         RawMessage: { Data: Buffer.from(ses_mail) },
-        Destinations: ["nicks@mcsurfacesinc.com"],
-        // Destinations: email_to.concat(email_cc),
+        Destinations: email_to.concat(email_cc),
         Source: "'AWS Tutorial Series' <" + email_from + ">'"
     };
 

@@ -1,5 +1,7 @@
 const mysql = require('mysql');
 
+require('dotenv').config( );
+
 // RDS Connection Info imported from serverless.yml
 const connection = mysql.createConnection({
     host            : process.env.RDS_HOST,

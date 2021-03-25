@@ -1,3 +1,5 @@
+require('dotenv').config( );
+
 const S3 = require('../common/S3');
 const bucket = process.env.bucketName;
 
