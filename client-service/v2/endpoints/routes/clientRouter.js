@@ -69,6 +69,18 @@ router.get('/:clientId/address', async(request, response) => {
   });
 });
 
+router.get('/:clientId/addresses', async(request, response) => {
+  let sql1 = "SELECT addrs1, addrs2, ctynme, state_, zipcde FROM client WHERE id=?;";
+  let sql2 = "SELECT bilad1, bilad2, bilcty, bilste, bilzip FROM client WHERE id=?;";
+  let sql3 = "SELECT shpad1, shpad2, shpcty, shpste, shpzip FROM client WHERE id=?;";
+
+  connection.query(sql1.concat(sql2, sql3), Array(3).fill(request.params.clientId), (err, res) => {
+    if (err) throw err;
+
+    response.send([...res[0], ...res[1], ...res[2]]);
+  });
+});
+
 router.get('/:clientId/advanced-info', async(request, response) => {
   let sql = "SELECT * FROM client_info where client_id=?";
 

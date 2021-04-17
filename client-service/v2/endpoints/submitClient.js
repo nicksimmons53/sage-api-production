@@ -19,6 +19,11 @@ exports.handler = async event => {
     let woodEmailTemp = path.join(__dirname, '../common/Templates/WoodProgram.ejs');
     let carpetEmailTemp = path.join(__dirname, '../common/Templates/CarpetProgram.ejs');
     let cabinetEmailTemp = path.join(__dirname, '../common/Templates/CabinetProgram.ejs');
+    let tilePartEmailTemp = path.join(__dirname, '../common/Templates/TileParts.ejs');
+    let woodPartEmailTemp = path.join(__dirname, '../common/Templates/WoodParts.ejs');
+    let carpetPartEmailTemp = path.join(__dirname, '../common/Templates/CarpetParts.ejs');
+    let vinylPartEmailTemp = path.join(__dirname, '../common/Templates/VinylParts.ejs');
+    let countertopPartEmailTemp = path.join(__dirname, '../common/Templates/CountertopParts.ejs');
     let requestData = JSON.parse(event.body);
 
     console.log(requestData);
@@ -50,6 +55,84 @@ exports.handler = async event => {
                 program: program.info
             });
         }
+    });
+
+    // Render Billing Parts into EJS Files
+    let tilePartsHtml = null;
+    let tilePartsTables = requestData.program.tile;
+
+    console.log(tilePartsTables);
+    
+    tilePartsHtml = await ejs.renderFile(tilePartEmailTemp, {
+        floorTile: tilePartsTables.floorTile,
+        bathroomWallTile: tilePartsTables.bathroomWallTile,
+        backsplashWallTile: tilePartsTables.backsplashWallTile,
+        fireplaceWallTile: tilePartsTables.fireplaceWallTile,
+        floorStone: tilePartsTables.floorStone,
+        bathroomWallStone: tilePartsTables.bathroomWallStone,
+        backsplashWallStone: tilePartsTables.backsplashWallStone,
+        fireplaceWallStone: tilePartsTables.fireplaceWallStone,
+        showerPansStone: tilePartsTables.showerPansStone,
+        showerPansTile: tilePartsTables.showerPansTile,
+        showerPansDeco: tilePartsTables.showerPansDeco,
+        underlayment: tilePartsTables.underlayment,
+        patternCharges: tilePartsTables.patternCharges,
+        accents: tilePartsTables.accents,
+        showerSeats: tilePartsTables.showerSeats,
+        addOns: tilePartsTables.addOns
+    });
+
+    let woodPartsHtml = null;
+    let woodPartsTables = requestData.program.wood;
+
+    console.log(woodPartsTables);
+    
+    woodPartsHtml = await ejs.renderFile(woodPartEmailTemp, {
+        woodFlooring: woodPartsTables.woodFlooring,
+        underlayment: tilePartsTables.underlayment
+    });
+
+    // Render Billing Parts into EJS Files
+    let carpetPartsHtml = null;
+    let carpetPartsTables = requestData.program.carpet;
+
+    console.log(carpetPartsTables);
+    
+    carpetPartsHtml = await ejs.renderFile(carpetPartEmailTemp, {
+        carpetFlooring: carpetPartsTables.carpetFlooring,
+        carpetPad: carpetPartsTables.carpetPad
+    });
+
+    // Render Billing Parts into EJS Files
+    let vinylPartsHtml = null;
+    let vinylPartsTables = requestData.program.vinyl;
+
+    console.log(vinylPartsTables);
+    
+    vinylPartsHtml = await ejs.renderFile(vinylPartEmailTemp, {
+        vinylPlank: vinylPartsTables.vinylPlank,
+        vinylSheet: vinylPartsTables.vinylSheet
+    });
+
+    // Render Billing Parts into EJS Files
+    let countertopPartsHtml = null;
+    let countertopPartsTables = requestData.program.countertops;
+
+    console.log(countertopPartsTables);
+    
+    countertopPartsHtml = await ejs.renderFile(countertopPartEmailTemp, {
+        edges: countertopPartsTables.edges,
+        sinks: countertopPartsTables.sinks,
+        level1: countertopPartsTables.level1,
+        level2: countertopPartsTables.level2,
+        level3: countertopPartsTables.level3,
+        level4: countertopPartsTables.level4,
+        level5: countertopPartsTables.level5,
+        level6: countertopPartsTables.level6,
+        level7: countertopPartsTables.level7,
+        level8: countertopPartsTables.level8,
+        level9: countertopPartsTables.level9,
+        level10: countertopPartsTables.level10,
     });
 
     // Render data into HTML file
@@ -105,6 +188,26 @@ exports.handler = async event => {
         ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"${requestData.client.clnnme}-WoodProgram.html\"\n\n`;
         ses_mail = ses_mail + programs[4].html.toString('base64') + "\n"
     }
+    ses_mail = ses_mail + "--NextPart\n";
+    ses_mail = ses_mail + "Content-Type: text/html;\n";
+    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"TileBillingParts.html\"\n\n`;
+    ses_mail = ses_mail + tilePartsHtml.toString('base64') + "\n"
+    ses_mail = ses_mail + "--NextPart\n";
+    ses_mail = ses_mail + "Content-Type: text/html;\n";
+    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"WoodBillingParts.html\"\n\n`;
+    ses_mail = ses_mail + woodPartsHtml.toString('base64') + "\n"
+    ses_mail = ses_mail + "--NextPart--";
+    ses_mail = ses_mail + "Content-Type: text/html;\n";
+    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"CarpetBillingParts.html\"\n\n`;
+    ses_mail = ses_mail + carpetPartsHtml.toString('base64') + "\n"
+    ses_mail = ses_mail + "--NextPart--";
+    ses_mail = ses_mail + "Content-Type: text/html;\n";
+    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"VinylBillingParts.html\"\n\n`;
+    ses_mail = ses_mail + vinylPartsHtml.toString('base64') + "\n"
+    ses_mail = ses_mail + "--NextPart--";
+    ses_mail = ses_mail + "Content-Type: text/html;\n";
+    ses_mail = ses_mail + `Content-Disposition: attachment; filename=\"CountertopBillingParts.html\"\n\n`;
+    ses_mail = ses_mail + countertopPartsHtml.toString('base64') + "\n"
     ses_mail = ses_mail + "--NextPart--";
 
     // Params for SES raw email

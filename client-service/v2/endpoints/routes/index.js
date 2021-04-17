@@ -21,5 +21,6 @@ router.get('/email_login', async(request, response) => {
 });
 
 router.use('/employee', require('./employeeRouter'));
+router.use('/admin', require('./adminRouter'));
 
 module.exports = router;

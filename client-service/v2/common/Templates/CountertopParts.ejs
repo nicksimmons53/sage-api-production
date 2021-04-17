@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Quicksand:wght@500&display=swap" rel="stylesheet">
+    <title>Client Information</title>
+
+    <style>
+        h1 { 
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+        }
+        table {
+            font-family: 'Quicksand', sans-serif;
+            margin: 25px auto;
+            width: 85%;
+            border-collapse: collapse;
+            border: 1px solid #eee;
+            border-radius: 5px;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.10),
+                0px 10px 20px rgba(0,0,0,0.05),
+                0px 20px 20px rgba(0,0,0,0.05),
+                0px 30px 20px rgba(0,0,0,0.05);
+        }
+        tr:hover td {
+            background: #34495e;
+            color: #FFFFFF;
+        }
+        th {
+            color: #34495e;
+            border: 1px solid #eee;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        td {font-family: 'Open Sans', sans-serif;
+            width: 50%;
+            color: #34495e;
+            border: 1px solid #eee;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        td#contact {font-family: 'Open Sans', sans-serif;
+            width: 25%;
+            color: #34495e;
+            border: 1px solid #eee;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        th#contactHeader {
+            font-family: 'Quicksand', sans-serif;
+            width: 25%;
+            background-color: #21c293;
+            border: 1px solid #eee;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        th#subset {
+            font-family: 'Quicksand', sans-serif;
+            width: 50%;
+            background-color: #21c293;
+            border: 1px solid #eee;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            padding: 12px 35px;
+            border-collapse: collapse;
+        }
+        th {
+            font-family: 'Quicksand', sans-serif;
+            background: #34495e;
+            border-top-right-radius: 5px;
+            border-top-left-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+        .example_f {
+            width: 40%;
+            text-decoration: none;
+            border: none;
+            background: #21c293;
+            color: #ffffff !important;
+            font-weight: 100;
+            font-family: 'Open Sans', sans-serif;
+            padding: 20px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.3s ease 0s;
+            margin-top: 24px;
+        }
+        .example_e {
+            width: 40%;
+            text-decoration: none;
+            border: none;
+            background: #85929e;
+            color: #ffffff !important;
+            font-weight: 100;
+            font-family: 'Arial';
+            padding: 20px;
+            text-transform: uppercase;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.3s ease 0s;
+            margin-top: 24px;
+            margin-bottom: 128px;
+        }
+        .example_e:hover {
+            color: #404040 !important;
+            font-weight: 700 !important;
+            font-family: 'Open Sans', sans-serif;
+            letter-spacing: 3px;
+            background: none;
+            -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+            -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+            transition: all 0.3s ease 0s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Countertop Billing Parts</h1>
+    </header>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Edges</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < edges.length; i++) { %>
+            <tr>
+                <td id="part"><%= edges[i].type %></td>
+                <td id="part"><%= edges[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Sinks/Shape</th>
+        </tr>
+        <tr>
+            <th colspan="1">Description</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < sinks.length; i++) { %>
+            <tr>
+                <td id="part"><%= sinks[i].description %></td>
+                <td id="part"><%= sinks[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 1</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level1.length; i++) { %>
+            <tr>
+                <td id="part"><%= level1[i].type %></td>
+                <td id="part"><%= level1[i].color %></td>
+                <td id="part"><%= level1[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 2</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level2.length; i++) { %>
+            <tr>
+                <td id="part"><%= level2[i].type %></td>
+                <td id="part"><%= level2[i].color %></td>
+                <td id="part"><%= level2[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 3</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level3.length; i++) { %>
+            <tr>
+                <td id="part"><%= level3[i].type %></td>
+                <td id="part"><%= level3[i].color %></td>
+                <td id="part"><%= level3[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 4</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level4.length; i++) { %>
+            <tr>
+                <td id="part"><%= level4[i].type %></td>
+                <td id="part"><%= level4[i].color %></td>
+                <td id="part"><%= level4[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 5</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level5.length; i++) { %>
+            <tr>
+                <td id="part"><%= level5[i].type %></td>
+                <td id="part"><%= level5[i].color %></td>
+                <td id="part"><%= level5[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 6</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level6.length; i++) { %>
+            <tr>
+                <td id="part"><%= level6[i].type %></td>
+                <td id="part"><%= level6[i].color %></td>
+                <td id="part"><%= level6[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 7</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level7.length; i++) { %>
+            <tr>
+                <td id="part"><%= level7[i].type %></td>
+                <td id="part"><%= level7[i].color %></td>
+                <td id="part"><%= level7[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 8</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level8.length; i++) { %>
+            <tr>
+                <td id="part"><%= level8[i].type %></td>
+                <td id="part"><%= level8[i].color %></td>
+                <td id="part"><%= level8[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 9</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level9.length; i++) { %>
+            <tr>
+                <td id="part"><%= level9[i].type %></td>
+                <td id="part"><%= level9[i].color %></td>
+                <td id="part"><%= level9[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+
+    <table><tbody>
+        <tr>
+            <th colspan="6">Level 10</th>
+        </tr>
+        <tr>
+            <th colspan="1">Type</th>
+            <th colspan="1">Color</th>
+            <th colspan="1">Total</th>
+        </tr>
+        <% for(var i=0; i < level10.length; i++) { %>
+            <tr>
+                <td id="part"><%= level10[i].type %></td>
+                <td id="part"><%= level10[i].color %></td>
+                <td id="part"><%= level10[i].total %></td>
+            </tr>
+        <% } %>
+    </tbody></table>
+</body>
+</html>
