@@ -66,6 +66,65 @@ functions:
           path: v2/push-to-sage
           method: get
 
+  v3-app:
+    handler: v3/endpoints/main.handler
+    role: arn:aws:iam::819250165252:role/lambda-vpc-role
+    vpc:
+      securityGroupIds:
+        - sg-048466d4c2e612633
+      subnetIds:
+        - subnet-088d8b37b47689b8b
+        - subnet-02795bfb528be4b3a
+    events:
+      - http: 
+          path: /v3/
+          method: ANY
+          cors: true
+      - http:
+          path: '/v3/{proxy+}'
+          method: ANY 
+          cors: true
+  v3-submitClient:
+    handler: v3/endpoints/submitClient.handler
+    role: sesLambdaRole
+    events:
+      - http: 
+          path: v3/submit-client
+          method: post
+          cors: true
+  v3-sendEmail:
+    handler: v3/endpoints/sendEmail.handler
+    role: sesLambdaRole
+    events:
+      - http: 
+          path: v3/send-email
+          method: post
+          cors: true
+  v3-createFile:
+    handler: v3/endpoints/createFile.handler
+    role: s3LambdaRole
+    events:
+      - http:
+          path: v3/create-file/{fileName}
+          method: post
+          cors: true
+  v3-getFile:
+    handler: v3/endpoints/listFiles.handler
+    role: s3LambdaRole
+    events:
+      - http:
+          path: v3/list-files/{fileName}
+          method: get
+          cors: true
+  v3-pushToSage:
+    handler: v3/endpoints/pushToSage.handler
+    role: arn:aws:iam::819250165252:role/lambda-vpc-role
+    events:
+      - http:
+          path: v3/push-to-sage
+          method: get
+          cors: true
+
 
 resources:
   Resources:
